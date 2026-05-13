@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>亗 LUIXOZ 亗 — Free Fire Tools</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Exo+2:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- ═══════════════════════════════════════
+       REEMPLAZA CON TU CÓDIGO DE ADSENSE:
+       <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXX" crossorigin="anonymous"></script>
+       ═══════════════════════════════════════ -->
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #080c10;
+      --bg2:       #0d1117;
+      --bg3:       #111820;
+      --surface:   #141c26;
+      --border:    #1e2d3d;
+      --border2:   #ff6a00;
+      --text:      #e8edf2;
+      --muted:     #6b7f93;
+      --orange:    #ff6a00;
+      --orange2:   #ff9a3c;
+      --red:       #e83030;
+      --gold:      #f0c040;
+      --cyan:      #00d4ff;
+      --glow-o:    0 0 18px rgba(255,106,0,0.55);
+      --glow-r:    0 0 18px rgba(232,48,48,0.5);
+      --glow-c:    0 0 12px rgba(0,212,255,0.4);
+      --font-title:'Rajdhani', sans-serif;
+      --font-body: 'Exo 2', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── FONDO ANIMADO ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0;
+      background:
+        radial-gradient(ellipse 60% 40% at 80% 10%, rgba(255,106,0,0.08) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 50% at 10% 80%, rgba(232,48,48,0.06) 0%, transparent 70%),
+        repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,106,0,0.03) 40px),
+        repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,106,0,0.03) 40px);
+      pointer-events: none;
+    }
+
+    /* ── VISTA PÚBLICA ── */
+    #public-view {
+      position: relative; z-index: 1;
+      max-width: 520px;
+      margin: 0 auto;
+      padding: 2.5rem 1.25rem 5rem;
+    }
+
+    /* ── HEADER / PERFIL ── */
+    .profile-card {
+      position: relative;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem 1.5rem 1.5rem;
+      text-align: center;
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+    }
+    .profile-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--red), var(--orange), var(--gold));
+    }
+    .profile-card::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(255,106,0,0.12), transparent);
+      pointer-events: none;
+    }
+
+    .avatar-wrap {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 1rem;
+    }
+    .avatar {
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      border: 2px solid var(--orange);
+      box-shadow: var(--glow-o);
+      background: var(--bg3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 36px;
+    }
+    .avatar-ring {
+      position: absolute; inset: -6px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,106,0,0.3);
+      animation: spin 8s linear infinite;
+    }
+    .avatar-ring::before {
+      content: '';
+      position: absolute; top: -2px; left: 50%; transform: translateX(-50%);
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--orange);
+      box-shadow: var(--glow-o);
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .badge {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--red), var(--orange));
+      color: #fff;
+      font-family: var(--font-title);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .profile-name {
+      font-family: var(--font-title);
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: var(--text);
+      text-shadow: 0 0 20px rgba(255,106,0,0.4);
+      line-height: 1.1;
+    }
+    .profile-name .special { color: var(--orange); }
+    .profile-bio {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 6px;
+      line-height: 1.5;
+    }
+
+    .stats-row {
+      display: flex; gap: 1px;
+      margin-top: 1.25rem;
+      border-top: 1px solid var(--border);
+      padding-top: 1rem;
+    }
+    .stat {
+      flex: 1; text-align: center;
+    }
+    .stat-val {
+      font-family: var(--font-title);
+      font-size: 18px; font-weight: 700;
+      color: var(--orange);
+    }
+    .stat-lbl {
+      font-size: 11px; color: var(--muted);
+      text-transform: uppercase; letter-spacing: 0.08em;
+    }
+
+    /* ── ANUNCIOS ── */
+    .ad-slot {
+      background: var(--surface);
+      border: 1px dashed rgba(255,106,0,0.25);
+      border-radius: 10px;
+      padding: 12px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 11px;
+      font-family: var(--font-body);
+      margin-bottom: 1.25rem;
+      letter-spacing: 0.05em;
+    }
+    .ad-slot span {
+      display: block;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 4px;
+      color: rgba(255,106,0,0.4);
+    }
+
+    /* ── SECCIÓN TÍTULO ── */
+    .section-label {
+      display: flex; align-items: center; gap: 10px;
+      font-family: var(--font-title);
+      font-size: 13px; font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+    .section-label::before, .section-label::after {
+      content: ''; flex: 1; height: 1px;
+      background: var(--border);
+    }
+
+    /* ── TARJETAS DE ENLACES ── */
+    #public-links { display: flex; flex-direction: column; gap: 10px; }
+
+    .pub-card {
+      position: relative;
+      display: flex; align-items: center; gap: 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      text-decoration: none;
+      color: var(--text);
+      overflow: hidden;
+      transition: border-color 0.25s, transform 0.2s, box-shadow 0.25s;
+      animation: fadeUp 0.4s ease both;
+    }
+    @keyframes fadeUp {
+      from { opacity:0; transform: translateY(12px); }
+      to   { opacity:1; transform: translateY(0); }
+    }
+    .pub-card::before {
+      content: '';
+      position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+      background: linear-gradient(180deg, var(--orange), var(--red));
+      border-radius: 3px 0 0 3px;
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+    .pub-card:hover {
+      border-color: rgba(255,106,0,0.5);
+      transform: translateX(4px);
+      box-shadow: var(--glow-o);
+    }
+    .pub-card:hover::before { opacity: 1; }
+
+    .card-icon {
+      width: 44px; height: 44px; flex-shrink: 0;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+      transition: border-color 0.25s;
+    }
+    .pub-card:hover .card-icon { border-color: rgba(255,106,0,0.4); }
+
+    .card-body { flex: 1; min-width: 0; }
+    .card-body h3 {
+      font-family: var(--font-title);
+      font-size: 16px; font-weight: 600;
+      letter-spacing: 0.02em;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .card-body p {
+      font-size: 12px; color: var(--muted);
+      margin-top: 2px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+
+    .card-arrow {
+      color: var(--orange);
+      font-size: 18px; flex-shrink: 0;
+      opacity: 0; transform: translateX(-4px);
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .pub-card:hover .card-arrow { opacity: 1; transform: translateX(0); }
+
+    .empty-public {
+      text-align: center; padding: 3rem 0;
+      color: var(--muted); font-size: 14px;
+    }
+    .empty-public .ff-icon { font-size: 40px; display: block; margin-bottom: 8px; opacity: 0.4; }
+
+    /* ── BOTÓN ADMIN FLOTANTE ── */
+    #admin-btn {
+      position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 50;
+      background: var(--surface);
+      border: 1px solid var(--border2);
+      border-radius: 50px;
+      font-family: var(--font-title);
+      font-size: 14px; font-weight: 600;
+      letter-spacing: 0.05em;
+      color: var(--orange);
+      padding: 10px 20px;
+      cursor: pointer;
+      box-shadow: var(--glow-o);
+      transition: background 0.2s;
+    }
+    #admin-btn:hover { background: rgba(255,106,0,0.1); }
+
+    /* ── MODAL LOGIN ── */
+    #login-modal {
+      display: none; position: fixed; inset: 0; z-index: 200;
+      background: rgba(0,0,0,0.75);
+      backdrop-filter: blur(4px);
+      align-items: center; justify-content: center;
+    }
+    #login-modal.open { display: flex; }
+    .modal-box {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+      width: 100%; max-width: 320px;
+      position: relative; overflow: hidden;
+    }
+    .modal-box::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--red), var(--orange), var(--gold));
+    }
+    .modal-box h2 {
+      font-family: var(--font-title);
+      font-size: 20px; font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .modal-box p { font-size: 13px; color: var(--muted); margin-bottom: 1.25rem; }
+    .modal-box input {
+      width: 100%;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-family: var(--font-body);
+      font-size: 14px; color: var(--text);
+      padding: 10px 14px; outline: none;
+      transition: border-color 0.2s;
+      margin-bottom: 10px;
+    }
+    .modal-box input::placeholder { color: var(--muted); }
+    .modal-box input:focus { border-color: var(--orange); box-shadow: var(--glow-o); }
+    .modal-row { display: flex; gap: 8px; }
+    .btn-cancel {
+      flex: 1; background: transparent; border: 1px solid var(--border);
+      border-radius: 8px; color: var(--muted);
+      font-family: var(--font-body); font-size: 14px;
+      padding: 10px; cursor: pointer;
+    }
+    .btn-enter {
+      flex: 1;
+      background: linear-gradient(135deg, var(--red), var(--orange));
+      border: none; border-radius: 8px; color: #fff;
+      font-family: var(--font-title); font-size: 15px; font-weight: 700;
+      letter-spacing: 0.05em;
+      padding: 10px; cursor: pointer;
+      box-shadow: var(--glow-o);
+      transition: opacity 0.2s;
+    }
+    .btn-enter:hover { opacity: 0.85; }
+    .login-err { font-size: 12px; color: var(--red); margin-top: 4px; display: none; }
+
+    /* ── PANEL ADMIN ── */
+    #admin-view {
+      display: none; position: relative; z-index: 1;
+      max-width: 900px; margin: 0 auto;
+      padding: 2rem 1.25rem 4rem;
+    }
+    #admin-view.open { display: block; }
+
+    .admin-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .admin-header h1 {
+      font-family: var(--font-title);
+      font-size: 26px; font-weight: 700;
+    }
+    .admin-header h1 span { color: var(--orange); }
+    .logout-btn {
+      background: transparent; border: 1px solid var(--border);
+      border-radius: 8px; font-family: var(--font-body); font-size: 13px;
+      color: var(--muted); padding: 7px 14px; cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .logout-btn:hover { border-color: var(--red); color: var(--red); }
+
+    .admin-grid {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 1.5rem; align-items: start;
+    }
+
+    .box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px; padding: 1.5rem;
+      position: relative; overflow: hidden;
+    }
+    .box::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--red), var(--orange));
+    }
+    .box-title {
+      font-family: var(--font-title);
+      font-size: 13px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      color: var(--orange);
+      margin-bottom: 1.25rem;
+    }
+
+    .field { margin-bottom: 10px; }
+    .field label {
+      display: block; font-size: 11px; color: var(--muted);
+      text-transform: uppercase; letter-spacing: 0.08em;
+      margin-bottom: 4px;
+    }
+    .field input, .field textarea {
+      width: 100%;
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 8px; font-family: var(--font-body);
+      font-size: 14px; color: var(--text);
+      padding: 9px 12px; outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .field input::placeholder, .field textarea::placeholder { color: var(--muted); }
+    .field input:focus, .field textarea:focus {
+      border-color: var(--orange);
+      box-shadow: 0 0 0 2px rgba(255,106,0,0.15);
+    }
+    .field textarea { resize: vertical; min-height: 70px; }
+
+    .pub-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--red), var(--orange));
+      border: none; border-radius: 8px;
+      font-family: var(--font-title); font-size: 16px; font-weight: 700;
+      letter-spacing: 0.06em; color: #fff;
+      padding: 12px; cursor: pointer;
+      box-shadow: var(--glow-o);
+      transition: opacity 0.2s, transform 0.15s;
+      margin-top: 4px;
+    }
+    .pub-btn:hover { opacity: 0.88; }
+    .pub-btn:active { transform: scale(0.97); }
+    .form-err { font-size: 12px; color: var(--red); margin-top: 6px; display: none; }
+
+    .admin-cards { display: flex; flex-direction: column; gap: 10px; }
+    .admin-card {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .admin-card-emoji { font-size: 22px; flex-shrink: 0; }
+    .admin-card-info { flex: 1; min-width: 0; }
+    .admin-card-info h3 {
+      font-family: var(--font-title);
+      font-size: 15px; font-weight: 600;
+    }
+    .admin-card-info p { font-size: 12px; color: var(--muted); margin-top: 1px; }
+    .admin-card-info a {
+      font-size: 11px; color: rgba(255,106,0,0.7);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      display: block; margin-top: 2px;
+    }
+    .del-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 7px; padding: 6px 10px;
+      cursor: pointer; color: var(--muted);
+      font-size: 16px; line-height: 1; flex-shrink: 0;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .del-btn:hover { border-color: var(--red); color: var(--red); }
+
+    @media (max-width: 640px) {
+      .admin-grid { grid-template-columns: 1fr; }
+      .profile-name { font-size: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════
+       VISTA PÚBLICA
+       ═══════════════════════════════════════ -->
+  <div id="public-view">
+
+    <!-- Perfil -->
+    <div class="profile-card">
+      <div class="avatar-wrap">
+        <div class="avatar">🔥</div>
+        <div class="avatar-ring"></div>
+      </div>
+      <div class="badge">🎮 Free Fire Creator</div>
+      <div class="profile-name">亗 <span class="special">LUIXOZ</span> 亗</div>
+      <div class="profile-bio" id="pub-bio">Creador de herramientas y contenido de Free Fire 🔥<br>Suscríbete y activa la campana 🔔</div>
+      <div class="stats-row">
+        <div class="stat">
+          <div class="stat-val">🎯</div>
+          <div class="stat-lbl">Tools</div>
+        </div>
+        <div class="stat">
+          <div class="stat-val">🔥</div>
+          <div class="stat-lbl">Free Fire</div>
+        </div>
+        <div class="stat">
+          <div class="stat-val">⚔️</div>
+          <div class="stat-lbl">Rank</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ANUNCIO SUPERIOR -->
+    <div class="ad-slot">
+      <span>☠ Publicidad ☠</span>
+      <!-- Pega aquí tu bloque de AdSense -->
+      <!-- <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXX" data-ad-slot="XXXX" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script> -->
+      Banner 468×60
+    </div>
+
+    <!-- Sección enlaces -->
+    <div class="section-label">⚔ Herramientas &amp; Links ⚔</div>
+    <div id="public-links">
+      <div class="empty-public">
+        <span class="ff-icon">🎮</span>
+        No hay herramientas publicadas aún.<br>¡Vuelve pronto!
+      </div>
+    </div>
+
+    <!-- ANUNCIO INFERIOR -->
+    <div class="ad-slot" style="margin-top:1.25rem;">
+      <span>☠ Publicidad ☠</span>
+      <!-- Pega aquí tu bloque de AdSense -->
+      Banner 468×60
+    </div>
+
+  </div>
+
+  <!-- Botón admin -->
+  <button id="admin-btn" onclick="openLogin()">⚙ ADMIN</button>
+
+  <!-- ═══════════════════════════════════════
+       MODAL LOGIN
+       ═══════════════════════════════════════ -->
+  <div id="login-modal">
+    <div class="modal-box">
+      <h2>🔐 Acceso Admin</h2>
+      <p>Solo para 亗 LUIXOZ 亗</p>
+      <input type="password" id="pwd-input" placeholder="Contraseña secreta" onkeydown="if(event.key==='Enter')checkLogin()" />
+      <p class="login-err" id="login-err">❌ Contraseña incorrecta.</p>
+      <div class="modal-row">
+        <button class="btn-cancel" onclick="closeLogin()">Cancelar</button>
+        <button class="btn-enter" onclick="checkLogin()">ENTRAR</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       PANEL ADMIN
+       ═══════════════════════════════════════ -->
+  <div id="admin-view">
+    <div class="admin-header">
+      <h1>Panel <span>Admin</span> 🔥</h1>
+      <button class="logout-btn" onclick="logout()">Salir ✕</button>
+    </div>
+
+    <div class="admin-grid">
+
+      <div class="box">
+        <p class="box-title">⚔ Nuevo enlace</p>
+        <div class="field">
+          <label>Título</label>
+          <input type="text" id="inp-title" placeholder="Ej: Generador de nicks" />
+        </div>
+        <div class="field">
+          <label>URL</label>
+          <input type="url" id="inp-url" placeholder="https://..." />
+        </div>
+        <div class="field">
+          <label>Descripción</label>
+          <textarea id="inp-desc" placeholder="¿Qué hace esta herramienta?"></textarea>
+        </div>
+        <div class="field">
+          <label>Emoji / Ícono</label>
+          <input type="text" id="inp-emoji" placeholder="🎯 🔥 ⚔️ 🏆 🎮" />
+        </div>
+        <button class="pub-btn" onclick="publish()">🔥 PUBLICAR</button>
+        <p class="form-err" id="form-err"></p>
+      </div>
+
+      <div class="box">
+        <p class="box-title">📋 Publicados</p>
+        <div class="admin-cards" id="admin-cards">
+          <p style="font-size:13px;color:var(--muted);">No hay enlaces aún.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // ═══════════════════════════════════════
+    // CONFIGURACIÓN — cambia estos valores
+    // ═══════════════════════════════════════
+    const CONFIG = {
+      password: "luixoz123",   // ← CAMBIA TU CONTRASEÑA
+    };
+
+    let links = JSON.parse(localStorage.getItem('ff_links') || '[]');
+    renderPublic();
+
+    function openLogin()  {
+      document.getElementById('login-modal').classList.add('open');
+      setTimeout(() => document.getElementById('pwd-input').focus(), 100);
+    }
+    function closeLogin() {
+      document.getElementById('login-modal').classList.remove('open');
+      document.getElementById('pwd-input').value = '';
+      document.getElementById('login-err').style.display = 'none';
+    }
+    function checkLogin() {
+      if (document.getElementById('pwd-input').value === CONFIG.password) {
+        closeLogin();
+        document.getElementById('public-view').style.display = 'none';
+        document.getElementById('admin-btn').style.display   = 'none';
+        document.getElementById('admin-view').classList.add('open');
+        renderAdmin();
+      } else {
+        document.getElementById('login-err').style.display = 'block';
+      }
+    }
+    function logout() {
+      document.getElementById('admin-view').classList.remove('open');
+      document.getElementById('public-view').style.display = '';
+      document.getElementById('admin-btn').style.display   = '';
+    }
+
+    function publish() {
+      const title = document.getElementById('inp-title').value.trim();
+      const url   = document.getElementById('inp-url').value.trim();
+      const desc  = document.getElementById('inp-desc').value.trim();
+      const emoji = document.getElementById('inp-emoji').value.trim() || '🔥';
+      const err   = document.getElementById('form-err');
+      err.style.display = 'none';
+      if (!title) { err.textContent = 'El título es obligatorio.'; err.style.display='block'; return; }
+      if (!url)   { err.textContent = 'La URL es obligatoria.';    err.style.display='block'; return; }
+      try { new URL(url); } catch(e) { err.textContent = 'URL no válida.'; err.style.display='block'; return; }
+      links.unshift({ id: Date.now(), title, url, desc, emoji });
+      save(); renderPublic(); renderAdmin();
+      ['inp-title','inp-url','inp-desc','inp-emoji'].forEach(id => document.getElementById(id).value = '');
+    }
+
+    function deleteLink(id) {
+      links = links.filter(l => l.id !== id);
+      save(); renderPublic(); renderAdmin();
+    }
+    function save() { localStorage.setItem('ff_links', JSON.stringify(links)); }
+
+    function renderPublic() {
+      const c = document.getElementById('public-links');
+      if (!links.length) {
+        c.innerHTML = '<div class="empty-public"><span class="ff-icon">🎮</span>No hay herramientas publicadas aún.<br>¡Vuelve pronto!</div>';
+        return;
+      }
+      c.innerHTML = links.map((l, i) => `
+        <a class="pub-card" href="${esc(l.url)}" target="_blank" rel="noopener" style="animation-delay:${i*0.07}s">
+          <div class="card-icon">${esc(l.emoji)}</div>
+          <div class="card-body">
+            <h3>${esc(l.title)}</h3>
+            ${l.desc ? `<p>${esc(l.desc)}</p>` : ''}
+          </div>
+          <span class="card-arrow">→</span>
+        </a>
+      `).join('');
+    }
+
+    function renderAdmin() {
+      const c = document.getElementById('admin-cards');
+      if (!links.length) { c.innerHTML = '<p style="font-size:13px;color:var(--muted);">No hay enlaces aún.</p>'; return; }
+      c.innerHTML = links.map(l => `
+        <div class="admin-card">
+          <div class="admin-card-emoji">${esc(l.emoji)}</div>
+          <div class="admin-card-info">
+            <h3>${esc(l.title)}</h3>
+            ${l.desc ? `<p>${esc(l.desc)}</p>` : ''}
+            <a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.url)}</a>
+          </div>
+          <button class="del-btn" onclick="deleteLink(${l.id})">✕</button>
+        </div>
+      `).join('');
+    }
+
+    function esc(s) {
+      return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+  </script>
+</body>
+</html>
